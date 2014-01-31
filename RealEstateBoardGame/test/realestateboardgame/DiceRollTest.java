@@ -27,8 +27,8 @@ public class DiceRollTest {
         int number = 4;
         DiceRoll Die1 = new DiceRoll();
         System.out.println("This is a randomly generated number " +
-                Die1.getDiceValue() + " It is automatically created when the Die" +
-                " class is called.");
+                Die1.getDiceValue() + " It is automatically created when the Die" 
+                + " class is called.");
     }
     
     /**
@@ -39,8 +39,9 @@ public class DiceRollTest {
         DiceRoll diceRoll;
         for(int i = 0; i < 100; i++){
            diceRoll = new DiceRoll();
-           assertTrue(i + "diceRoll failed here" + diceRoll,LOWEST_DICE_VALUE <= diceRoll.getDiceValue() && 
-                   diceRoll.getDiceValue() <= HIGHEST_DICE_VALUE);
+           assertTrue(i + "diceRoll failed here" + diceRoll,LOWEST_DICE_VALUE <=
+                   diceRoll.getDiceValue() &&  diceRoll.getDiceValue() <= 
+                   HIGHEST_DICE_VALUE);
         }
     }
 }
