@@ -12,16 +12,12 @@ import java.util.logging.Logger;
  */
 public class RealEstateBoardGame {
 
-    
-    private int cashFlow;
-    private int playerToken;
-    private int squarePurchased = 0;
+   private int squarePurchased = 0;
     private int indianaAve = 0;
     private int numberOfDiceRolls = 0;
     private static final int NUMBEROFGAMES = 1000;
     private int gameCount = 0;
     private boolean newGame = true;
-    private int trip;
     
     /**
      * @param args the command line arguments
@@ -36,25 +32,31 @@ public class RealEstateBoardGame {
             
             //Keep track of each games dice count
             int diceCount = 0;
+            
+            //Initiate generic variables to run the game
             int arrayPosition = 0;
             int paid = 0;
+            int cashFlow = 0;
+            int playerToken = 0;
+            int trip = 0;
+            int location = 0;
+            String square;
+            String type;
+            int cost = 0;
+            boolean purchase;
+            
             //Initiate the dice that will be rolled
             DiceRoll dice1;
             DiceRoll dice2;
 
             while(realEstate.gameCount < NUMBEROFGAMES){
-                int totalDice = 0;
-                int location = 0;
-                String square;
-                String type;
-                int cost = 0;
-                boolean purchase;
-
+                int totalDiceRoll = 0;
+                
                 //instantiate a new game when needed
                 if(realEstate.newGame){
-                    realEstate.cashFlow = 1500;
-                    realEstate.playerToken= 0;
-                    realEstate.trip = 0;
+                    cashFlow = 1500;
+                    playerToken= 0;
+                    trip = 0;
                     paid = 0;
                     diceCount = 0;
                     realEstate.newGame = false;
@@ -67,24 +69,27 @@ public class RealEstateBoardGame {
                 dice2 = new DiceRoll();
                 diceCount++;
             
-                totalDice = dice1.getDiceValue() + dice2.getDiceValue();
+                totalDiceRoll = dice1.getDiceValue() + dice2.getDiceValue();
                 
                 //add totalDice to playerToken to track location
-                realEstate.playerToken += totalDice;
+                playerToken += totalDiceRoll;
                 
-                if(realEstate.playerToken == 40){
-                    realEstate.cashFlow += 200;
+                //Player made it to or past go pay them 200
+                if(playerToken == 40){
+                    cashFlow += 200;
                     paid++;
                 }
-                else if(realEstate.playerToken > 40){
-                    realEstate.playerToken -= 40;
-                    realEstate.trip ++;
-                    if(paid < realEstate.trip){
-                        realEstate.cashFlow += 200;
+                else if(playerToken > 40){
+                    playerToken -= 40;
+                    trip ++;
+                    if(paid < trip){
+                        cashFlow += 200;
                         paid++;
                     }
                 }
-                arrayPosition = realEstate.playerToken - 1;
+                
+                arrayPosition = playerToken - 1;
+                
                 location = gameBoard.getLocation(arrayPosition);
                 square = gameBoard.getGameSquare(arrayPosition);
                 type = gameBoard.getSquareType(arrayPosition);
@@ -92,16 +97,15 @@ public class RealEstateBoardGame {
                 purchase = gameBoard.getPurchase(arrayPosition);
                 
                 if(square.equals("Income Tax")){
-                    int tax = (int) (realEstate.cashFlow * .10);
-                    
+                    int tax = (int) (cashFlow * .10);
                     if(tax > cost){
                         cost = tax;
                     }
                 }
                 
                 if((type.equals("property") && !purchase) || type.equals("penalty")) {
-                    realEstate.cashFlow -= cost;
-                    if(realEstate.cashFlow >= 0 && !type.equals("penalty")){
+                    cashFlow -= cost;
+                    if(cashFlow >= 0 && !type.equals("penalty")){
                         purchase = true;
                         gameBoard.setPurchase(purchase, arrayPosition);
                         realEstate.squarePurchased++;
@@ -112,7 +116,7 @@ public class RealEstateBoardGame {
                     }
                 }
                 
-                if(realEstate.cashFlow < 0 || diceCount == 1000){
+                if(cashFlow < 0 || diceCount == 1000){
                     realEstate.newGame = true;
                     realEstate.numberOfDiceRolls += diceCount;
                     realEstate.gameCount++;
@@ -126,21 +130,23 @@ public class RealEstateBoardGame {
         
         float averageTurns = 0;
         float propertyPurchaseAverage = 0;
-        int indianaPurchase = 0;
+        float percentIndianaPurchase = 0;
         
         averageTurns = realEstate.numberOfDiceRolls / (float) NUMBEROFGAMES;
         propertyPurchaseAverage = realEstate.squarePurchased /(float) NUMBEROFGAMES;
-        indianaPurchase = ((realEstate.indianaAve * 100) / NUMBEROFGAMES);
+        percentIndianaPurchase = ((realEstate.indianaAve * 100) / (float) NUMBEROFGAMES);
         
         System.out.println("After " + NUMBEROFGAMES + " games\n");
         System.out.println("The average number of turns in a game is " +
                 averageTurns + "\n" + "The number of dice rolls was " +
                 realEstate.numberOfDiceRolls + "\n");
+        
         System.out.println("The average number of properties purchased was " + 
                 propertyPurchaseAverage + "\n" + " The total properties purchased was "
-                 + realEstate.squarePurchased);
+                 + realEstate.squarePurchased + "\n");
+        
         System.out.println("The percentage of games that Indiana Avenue was purchased "
-                + indianaPurchase + "%\n" + "Indiana Avenue was purchased " +
+                + percentIndianaPurchase + "%\n" + "Indiana Avenue was purchased " +
                  realEstate.indianaAve + " times\n");
     }
 }
