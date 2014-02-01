@@ -1,6 +1,6 @@
 1,Mediterranean Avenue,property,60
 2,Community Chest,penalty,0
-3,Baltic Avenue,propert,60
+3,Baltic Avenue,property,60
 4,Income Tax,penalty,200
 5,Reading Railroad,property,200
 6,Oriental Avenue,property,100
