@@ -32,7 +32,8 @@ public class DiceRollTest {
     }
     
     /**
-     * Test of DiceRoll method
+     * Test random number generation of DiceRoll method to ensure it falls 
+     * within specified range
      */
     @Test
     public void testDiceRoll(){
