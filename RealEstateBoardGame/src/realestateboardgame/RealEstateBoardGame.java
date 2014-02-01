@@ -37,6 +37,7 @@ public class RealEstateBoardGame {
             //Keep track of each games dice count
             int diceCount = 0;
             int arrayPosition = 0;
+            int paid = 0;
             //Initiate the dice that will be rolled
             DiceRoll dice1;
             DiceRoll dice2;
@@ -54,6 +55,7 @@ public class RealEstateBoardGame {
                     realEstate.cashFlow = 1500;
                     realEstate.playerToken= 0;
                     realEstate.trip = 0;
+                    paid = 0;
                     diceCount = 0;
                     realEstate.newGame = false;
                     for(int i = 0; i < gameBoard.getLength(); i++){
@@ -72,11 +74,15 @@ public class RealEstateBoardGame {
                 
                 if(realEstate.playerToken == 40){
                     realEstate.cashFlow += 200;
+                    paid++;
                 }
                 else if(realEstate.playerToken > 40){
                     realEstate.playerToken -= 40;
                     realEstate.trip ++;
-                    realEstate.cashFlow += 200;
+                    if(paid < realEstate.trip){
+                        realEstate.cashFlow += 200;
+                        paid++;
+                    }
                 }
                 arrayPosition = realEstate.playerToken - 1;
                 location = gameBoard.getLocation(arrayPosition);
